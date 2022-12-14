@@ -1,9 +1,11 @@
 package com.demo.pojo;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.UniqueConstraint;
 
 @Entity 
 public class Consumer {
@@ -12,6 +14,7 @@ public class Consumer {
 	private int consumerId;
 	
 	private String consumerName;
+	@Column(unique = true)
 	private String consumerAlias;
 	private String area;
 	private String city;
