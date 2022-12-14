@@ -1,5 +1,8 @@
 package com.demo.pojo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,15 +11,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
-@Entity
+@Entity(name = "bill")
 public class Bill {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int billId;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Consumer.consumerId")
+	@Column(nullable = false)
 	private int consumerId;
 	@Column(nullable = false)
 	private int unitsConsumed;
@@ -61,9 +64,9 @@ public class Bill {
 	public void setTotalAmount(int totalAmount) {
 		this.totalAmount = totalAmount;
 	}
-	public Bill(int billId, int consumerId, int unitsConsumed, int year, String month, int totalAmount) {
+	public Bill(int consumerId, int unitsConsumed, int year, String month, int totalAmount) {
 		super();
-		this.billId = billId;
+		//this.billId = billId;
 		this.consumerId = consumerId;
 		this.unitsConsumed = unitsConsumed;
 		this.year = year;
