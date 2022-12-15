@@ -56,14 +56,11 @@ public class ConsumerController {
 			return bills;
 		}
 	}
-//	@GetMapping("/consumer/getBillsByYear/{consumer_id}/{year}")
-//	public List<Bill> getBillsByYear(@PathVariable int year, @PathVariable int consumerId) {
-//		if((billRepository.getBillsByYear(year,consumerId)).isEmpty()) {
-//			return null;
-//		}else {
-//			return billRepository.getBillsByYear(year,consumerId);
-//		}
-//	}
+	
+	@PostMapping("/consumer/register")
+	public void addConsumer(@RequestBody Consumer c) {
+		consumerRepository.save(c);
+	}
 	
 	
 }
