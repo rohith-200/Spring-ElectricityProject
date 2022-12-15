@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.pojo.Bill;
@@ -23,12 +24,36 @@ public class ConsumerController {
 	@Autowired
 	ConsumerRepository consumerRepository;
 	
-	@GetMapping("/consumer/getBillsByMonth/{consumer_id}/{year}/{month}")
-	public List<Bill> getBillsByMonth(@PathVariable String month, @PathVariable int year, @PathVariable Consumer consumerId) {
-		if((billRepository.getBillsByMonth(month, year,consumerId)).isEmpty()) {
+	@GetMapping("/consumer/getBillsByMonth")
+	public List<Bill> getBillsByMonth(@RequestParam("month") String month, @RequestParam("year") int year,@RequestParam("consumerId") int consumerId) {
+		List<Bill> bills = billRepository.getBillsByMonth(month, year, consumerId);
+		if(bills.isEmpty()) {
+			System.out.println(bills);
 			return null;
 		}else {
-			return billRepository.getBillsByMonth(month, year, consumerId);
+			return bills;
+		}
+	}
+	
+	@GetMapping("/consumer/getBillsByYear")
+	public List<Bill> getBillsByYear(@RequestParam("year") int year,@RequestParam("consumerId") int consumerId) {
+		List<Bill> bills = billRepository.getBillsByYear(year, consumerId);
+		if(bills.isEmpty()) {
+			System.out.println(bills);
+			return null;
+		}else {
+			return bills;
+		}
+	}
+	
+	@GetMapping("/consumer/getAllBills")
+	public List<Bill> getAllBills(@RequestParam("consumerId") int consumerId) {
+		List<Bill> bills = billRepository.getAllBills(consumerId);
+		if(bills.isEmpty()) {
+			System.out.println(bills);
+			return null;
+		}else {
+			return bills;
 		}
 	}
 //	@GetMapping("/consumer/getBillsByYear/{consumer_id}/{year}")

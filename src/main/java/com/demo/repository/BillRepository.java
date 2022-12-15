@@ -30,13 +30,13 @@ public interface BillRepository extends CrudRepository<Bill, Integer>{
 	List<Bill> findBillsByCity(String city);
 	
 	@Query(value=" SELECT * FROM Bill WHERE month=:month and year=:year and consumer_id=:consumer_id", nativeQuery = true)
-	List<Bill> getBillsByMonth(@Param("month") String month, @Param("year") int year, @Param("consumer_id") Consumer consumer_id);
+	List<Bill> getBillsByMonth(@Param("month") String month, @Param("year") int year, @Param("consumer_id") int consumer_id);
 //	
-//	@Query(value = "select * from Bill where year=? && consumer_id=:consumer_id", nativeQuery = true)
-//	List<Bill> getBillsByYear(@Param ("year") int year, @Param("consumer_id") int consumer_id);
+	@Query(value = "select * from Bill where year=:year && consumer_id=:consumer_id", nativeQuery = true)
+	List<Bill> getBillsByYear(@Param ("year") int year, @Param("consumer_id") int consumer_id);
 //	
-//	@Query(value = "select * from Bill where consumer_id=:consumer_id ", nativeQuery = true)
-//	List<Bill> getAllBills(@Param("consumer_id") int consumer_id);
+	@Query(value = "select * from Bill where consumer_id=:consumer_id ", nativeQuery = true)
+	List<Bill> getAllBills(@Param("consumer_id") int consumer_id);
 	
 //	consumerid
 //	consumer name
