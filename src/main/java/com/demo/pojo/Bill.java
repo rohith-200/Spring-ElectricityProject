@@ -13,14 +13,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-@Entity(name = "bill")
+@Entity
 public class Bill {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int billId;
 	@Column(nullable = false)
-	private int consumerId;
+	@ManyToOne
+    @JoinColumn(name="consumerId", nullable=false)
+	private Consumer consumerId;
 	@Column(nullable = false)
 	private int unitsConsumed;
 	@Column(nullable = false)
@@ -34,10 +36,10 @@ public class Bill {
 	public void setBillId(int billId) {
 		this.billId = billId;
 	}
-	public int getConsumerId() {
+	public Consumer getConsumerId() {
 		return consumerId;
 	}
-	public void setConsumerId(int consumerId) {
+	public void setConsumerId(Consumer consumerId) {
 		this.consumerId = consumerId;
 	}
 	public int getUnitsConsumed() {
@@ -64,7 +66,7 @@ public class Bill {
 	public void setTotalAmount(int totalAmount) {
 		this.totalAmount = totalAmount;
 	}
-	public Bill(int consumerId, int unitsConsumed, int year, String month, int totalAmount) {
+	public Bill(Consumer consumerId, int unitsConsumed, int year, String month, int totalAmount) {
 		super();
 		//this.billId = billId;
 		this.consumerId = consumerId;

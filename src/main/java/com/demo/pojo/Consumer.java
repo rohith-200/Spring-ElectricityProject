@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.UniqueConstraint;
 
-@Entity(name = "consumer")
+@Entity
 public class Consumer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +25,8 @@ public class Consumer {
 	private String city;
 	private String connectionType;
 	private String password;
+	@OneToMany(mappedBy="consumerId")
+	private List<Bill> bills;
 	public int getConsumerId() {
 		return consumerId;
 	}
@@ -67,10 +69,10 @@ public class Consumer {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Consumer(int consumerId, String consumerName, String consumerAlias, String area, String city,
+	public Consumer(String consumerName, String consumerAlias, String area, String city,
 			String connectionType, String password) {
 		super();
-		this.consumerId = consumerId;
+		//this.consumerId = consumerId;
 		this.consumerName = consumerName;
 		this.consumerAlias = consumerAlias;
 		this.area = area;

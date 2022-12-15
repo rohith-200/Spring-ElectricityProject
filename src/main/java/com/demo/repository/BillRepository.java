@@ -14,8 +14,17 @@ import com.demo.pojo.Consumer;
 @Repository
 public interface BillRepository extends CrudRepository<Bill, Integer>{
 	
-	@Query(value = "select * from Bill where year=:year", nativeQuery = true)
-	List<Bill> findAllByYear(@Param("year") int year);
+	@Query(value = "select * from Bill where year=?", nativeQuery = true)
+	List<Bill> findAllByYear(int year);
+	
+	@Query(value=" SELECT * FROM Bill WHERE month=:month && year=:year", nativeQuery = true)
+	List<Bill> findAllByMonth(@Param("month") String month, @Param("year") int year);
+	
+	@Query(value = "Select * from Bill join Consumer on Bill.consumer_id = Consumer.consumer_id where Consumer.area=?", nativeQuery = true)
+	List<Bill> findBillsByArea(String area);
+
+	@Query(value = "select * from Bill join Consumer on Bill.consumer_id = Consumer.consumer_id where Consumer.city=?", nativeQuery = true)
+	List<Bill> findBillsByCity(String city);
 	
 //	consumerid
 //	consumer name
