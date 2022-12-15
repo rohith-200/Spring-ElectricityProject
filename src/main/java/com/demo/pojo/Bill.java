@@ -19,7 +19,7 @@ public class Bill {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int billId;
-	@Column(nullable = false)
+	
 	@ManyToOne
     @JoinColumn(name="consumerId", nullable=false)
 	private Consumer consumerId;

@@ -33,7 +33,10 @@ public class SpringElectricityApplication implements CommandLineRunner {
 		billRepository.save(new Bill(c1,123,2022,"jan",200));
 //		billRepository.save(new Bill(2,234,2022,"jun",2001));
 //		billRepository.save(new Bill(9,12314,2022,"mar",200));
-		for(Bill emp:billRepository.findAllByYear(2022) ) {
+//		for(Bill emp:billRepository.findAllByYear(2022) ) {
+//			System.out.println(emp);
+//		}
+		for(Bill emp:billRepository.getBillsByMonth("jan", 2022, c1) ) {
 			System.out.println(emp);
 		}
 		
