@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.exceptions.BillNotFoundException;
 import com.demo.pojo.Admin;
 import com.demo.pojo.Bill;
 import com.demo.pojo.Consumer;
@@ -41,10 +42,10 @@ public class AdminController {
 	}
 	
 	@GetMapping("/Admin/getBillsByYear/{year}")
-	public List<Bill> getBillsByYear(@PathVariable int year) {
+	public List<Bill> getBillsByYear(@PathVariable int year) throws BillNotFoundException{
 		List<Bill> bills = billRepository.findAllByYear(year);
 		if(bills.isEmpty()) {
-			return null;
+			throw new BillNotFoundException("year = "+ year);
 		}else {
 			return bills;
 		}

@@ -26,7 +26,7 @@ public class SpringElectricityApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
-		Consumer c1 = new Consumer("Sita ramam", "sita", "anna nagar", "chennai",
+		Consumer c1 = new Consumer("Sita ramam", "anna nagar", "chennai",
 				"domestic");
 		consumerRepository.save(c1);
 		
