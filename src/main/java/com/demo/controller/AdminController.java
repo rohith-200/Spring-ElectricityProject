@@ -4,9 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.exceptions.BillNotFoundException;
@@ -41,8 +42,8 @@ public class AdminController {
 		billRepository.save(bill);
 	}
 	
-	@GetMapping("/Admin/getBillsByYear/{year}")
-	public List<Bill> getBillsByYear(@PathVariable int year) throws BillNotFoundException{
+	@GetMapping("/Admin/getBillsByYear")
+	public List<Bill> getBillsByYear(@RequestParam("year") int year) throws BillNotFoundException{
 		List<Bill> bills = billRepository.findAllByYear(year);
 		if(bills.isEmpty()) {
 			throw new BillNotFoundException("year = "+ year);
@@ -51,33 +52,40 @@ public class AdminController {
 		}
 	}
 	
-	@GetMapping("/Admin/getBillsByMonth/{month}/{year}")
-	public List<Bill> getBillsByYear(@PathVariable String month, @PathVariable int year) {
+	@GetMapping("/Admin/getBillsByMonth")
+	public List<Bill> getBillsByYear(@RequestParam("month") String month, @RequestParam("year") int year ) {
+		
 		List<Bill> bills = billRepository.findAllByMonth(month, year);
 		if(bills.isEmpty()) {
 			return null;
 		}else {
 			return bills;
 		}
+		
 	}
 	
-	@GetMapping("/admin/getBillsByArea/{area}")
-	public List<Bill> getBillsByArea(@PathVariable String area) {
+	@GetMapping("/admin/getBillsByArea")
+	public List<Bill> getBillsByArea(@RequestParam("area") String area) {
+		
 		List<Bill> bills = billRepository.findBillsByArea(area);
 		if(bills.isEmpty()) {
 			return null;
 		}else {
 			return bills;
 		}
+		
 	}
-	@GetMapping("/admin/getBillsByCity/{city}")
-	public List<Bill> getBillsByCity(@PathVariable String city) {
+	
+	@GetMapping("/admin/getBillsByCity")
+	public List<Bill> getBillsByCity(@RequestParam("city") String city) {
+		
 		List<Bill> bills = billRepository.findBillsByCity(city);
 		if(bills.isEmpty()) {
 			return null;
 		}else {
 			return bills;
 		}
+		
 	}
 	
 	@PostMapping("/admin/login")
@@ -94,5 +102,6 @@ public class AdminController {
 			return billRepository.findAllBill();
 		}
 	}
+	
 
 }
