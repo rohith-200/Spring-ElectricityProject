@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.exceptions.AdminNotFoundException;
 import com.demo.exceptions.BillNotFoundException;
+import com.demo.exceptions.ConsumerNotFoundException;
 import com.demo.pojo.Admin;
 import com.demo.pojo.Bill;
 import com.demo.pojo.Consumer;
@@ -30,8 +32,13 @@ public class AdminController {
 	ConsumerRepository consumerRepository;
 	
 	@PostMapping("/admin/addUnits")
-	public void addUnitsConsumed(@RequestParam("userName") String userName, @RequestParam("password") String password, @RequestParam("consumerId") int consumerId, @RequestParam("year") int year, @RequestParam("month") String month, @RequestParam("unitsConsumed") int unitsConsumed) {
+	public void addUnitsConsumed(@RequestParam("userName") String userName, @RequestParam("password") String password, @RequestParam("consumerId") int consumerId, @RequestParam("year") int year, @RequestParam("month") String month, @RequestParam("unitsConsumed") int unitsConsumed) throws ConsumerNotFoundException, AdminNotFoundException{
+		Admin admin = adminRepository.validateAdmin(userName, password);
+		if(admin==null) 
+			throw new AdminNotFoundException("Invalid admin credentials");
 		Consumer c  = consumerRepository.findById(consumerId).orElse(null);
+		if(c==null)
+			throw new ConsumerNotFoundException("Consumer not found");
 		Bill bill = new Bill();
 		bill.setConsumerId(c);
 		bill.setMonth(month);
@@ -44,10 +51,11 @@ public class AdminController {
 		billRepository.save(bill);
 	}
 	
-	@GetMapping("/Admin/getBillsByYear")
-	public List<Bill> getBillsByYear(@RequestParam("userName") String userName, @RequestParam("password") String password, @RequestParam("year") int year) throws BillNotFoundException{
+	@GetMapping("/admin/getBillsByYear")
+	public List<Bill> getBillsByYear(@RequestParam("userName") String userName, @RequestParam("password") String password, @RequestParam("year") int year) throws BillNotFoundException, AdminNotFoundException{
 		Admin admin = adminRepository.validateAdmin(userName, password);
-		if(admin==null) throw new BillNotFoundException("Invalid admin credentials");
+		if(admin==null) 
+			throw new AdminNotFoundException("Invalid admin credentials");
 		List<Bill> bills = billRepository.findAllByYear(year);
 		if(bills.isEmpty()) {
 			throw new BillNotFoundException("year = "+ year);
@@ -56,13 +64,14 @@ public class AdminController {
 		}
 	}
 	
-	@GetMapping("/Admin/getBillsByMonth")
-	public List<Bill> getBillsByYear(@RequestParam("userName") String userName, @RequestParam("password") String password, @RequestParam("month") String month, @RequestParam("year") int year ) throws BillNotFoundException {
+	@GetMapping("/admin/getBillsByMonth")
+	public List<Bill> getBillsByYear(@RequestParam("userName") String userName, @RequestParam("password") String password, @RequestParam("month") String month, @RequestParam("year") int year ) throws BillNotFoundException, AdminNotFoundException {
 		Admin admin = adminRepository.validateAdmin(userName, password);
-		if(admin==null) throw new BillNotFoundException("Invalid admin credentials");
+		if(admin==null) 
+			throw new AdminNotFoundException("Invalid admin credentials");
 		List<Bill> bills = billRepository.findAllByMonth(month, year);
 		if(bills.isEmpty()) {
-			return null;
+			throw new BillNotFoundException("Bill Not Found for "+month);
 		}else {
 			return bills;
 		}
@@ -70,12 +79,13 @@ public class AdminController {
 	}
 	
 	@GetMapping("/admin/getBillsByArea")
-	public List<Bill> getBillsByArea(@RequestParam("userName") String userName, @RequestParam("password") String password, @RequestParam("area") String area) throws BillNotFoundException {
+	public List<Bill> getBillsByArea(@RequestParam("userName") String userName, @RequestParam("password") String password, @RequestParam("area") String area) throws BillNotFoundException, AdminNotFoundException {
 		Admin admin = adminRepository.validateAdmin(userName, password);
-		if(admin==null) throw new BillNotFoundException("Invalid admin credentials");
+		if(admin==null) 
+			throw new AdminNotFoundException("Invalid admin credentials");
 		List<Bill> bills = billRepository.findBillsByArea(area);
 		if(bills.isEmpty()) {
-			return null;
+			throw new BillNotFoundException("Bill Not Found for "+area);
 		}else {
 			return bills;
 		}
@@ -83,12 +93,13 @@ public class AdminController {
 	}
 	
 	@GetMapping("/admin/getBillsByCity")
-	public List<Bill> getBillsByCity(@RequestParam("userName") String userName, @RequestParam("password") String password, @RequestParam("city") String city) throws BillNotFoundException {
+	public List<Bill> getBillsByCity(@RequestParam("userName") String userName, @RequestParam("password") String password, @RequestParam("city") String city) throws BillNotFoundException, AdminNotFoundException {
 		Admin admin = adminRepository.validateAdmin(userName, password);
-		if(admin==null) throw new BillNotFoundException("Invalid admin credentials");
+		if(admin==null) 
+			throw new AdminNotFoundException("Invalid admin credentials");
 		List<Bill> bills = billRepository.findBillsByCity(city);
 		if(bills.isEmpty()) {
-			return null;
+			throw new BillNotFoundException("Bill Not Found for "+city);
 		}else {
 			return bills;
 		}
@@ -96,12 +107,13 @@ public class AdminController {
 	}
 	
 	
-	@GetMapping("/Admin/getBills")
-	public List<Bill> getBills(@RequestParam("userName") String userName, @RequestParam("password") String password) throws BillNotFoundException {
+	@GetMapping("/admin/getBills")
+	public List<Bill> getBills(@RequestParam("userName") String userName, @RequestParam("password") String password) throws BillNotFoundException, AdminNotFoundException {
 		Admin admin = adminRepository.validateAdmin(userName, password);
-		if(admin==null) throw new BillNotFoundException("Invalid admin credentials");
+		if(admin==null) 
+			throw new AdminNotFoundException("Invalid admin credentials");
 		if((billRepository.findAllBill()).isEmpty()) {
-			return null;
+			throw new BillNotFoundException("Bill Not Found");
 		}else {
 			return billRepository.findAllBill();
 		}

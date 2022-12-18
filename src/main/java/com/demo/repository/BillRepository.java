@@ -37,6 +37,8 @@ public interface BillRepository extends CrudRepository<Bill, Integer>{
 //	
 	@Query(value = "select * from Bill where consumer_id=:consumer_id ", nativeQuery = true)
 	List<Bill> getAllBills(@Param("consumer_id") int consumer_id);
+	
+	
 
 	
 //	consumerid
