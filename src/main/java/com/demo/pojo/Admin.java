@@ -22,9 +22,9 @@ public class Admin {
 	public String toString() {
 		return "Admin [adminId=" + adminId + ", userName=" + userName + ", password=" + password + "]";
 	}
-	public Admin(int adminId, String userName, String password) {
+	public Admin(String userName, String password) {
 		super();
-		this.adminId = adminId;
+		//this.adminId = adminId;
 		this.userName = userName;
 		this.password = password;
 	}

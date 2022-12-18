@@ -1,7 +1,5 @@
 package com.demo.repository;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +9,7 @@ import com.demo.pojo.Admin;
 @Repository
 public interface AdminRepository extends CrudRepository<Admin, Integer>{
 	
-	@Query(value = "select * from admin where username=:username and password=:password", nativeQuery = true)
+	@Query(value = "select * from admin where user_name=:username and password=:password", nativeQuery = true)
 	Admin validateAdmin(@Param("username") String username, @Param("password") String password);
 
 }
