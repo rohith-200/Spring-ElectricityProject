@@ -5,8 +5,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.demo.pojo.Admin;
 import com.demo.pojo.Bill;
 import com.demo.pojo.Consumer;
+import com.demo.repository.AdminRepository;
 import com.demo.repository.BillRepository;
 import com.demo.repository.ConsumerRepository;
 
@@ -17,6 +19,9 @@ public class SpringElectricityApplication implements CommandLineRunner {
 	
 	@Autowired
 	ConsumerRepository consumerRepository;
+	
+	@Autowired
+	AdminRepository adminRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringElectricityApplication.class, args);
@@ -36,6 +41,7 @@ public class SpringElectricityApplication implements CommandLineRunner {
 //		for(Bill emp:billRepository.findAllByYear(2022) ) {
 //			System.out.println(emp);
 //		}
+		adminRepository.save(new Admin("admin","admin"));
 		for(Bill emp:billRepository.getBillsByMonth("jan", 2023, c1.getConsumerId()) ) {
 			System.out.println(emp);
 		}
