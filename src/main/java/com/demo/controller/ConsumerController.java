@@ -3,6 +3,7 @@ package com.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,25 +59,32 @@ public class ConsumerController {
 	}
 	
 	@PostMapping("/consumer/register")
-	public void addConsumer(@RequestBody Consumer c) throws ConnectionTypeNotFound {
-		if(c.getConnectionType().equalsIgnoreCase("Domestic") || c.getConnectionType().equalsIgnoreCase("Commercial"))
+	public void addConsumer(@RequestBody Consumer c)  {
 			consumerRepository.save(c);
-		else
-			throw new ConnectionTypeNotFound("Connection Type Invalid!!");
+		
 	}
 	
 	@PostMapping("/consumer/updateConsumerDetails")
-	public void updateConsumer(@RequestParam String consumerName,@RequestParam String area,@RequestParam String city,@RequestParam String connectionType,@RequestParam int consumerId) throws ConsumerNotFoundException, ConnectionTypeNotFound {
+	public String updateConsumer(@RequestParam String consumerName,@RequestParam String area,@RequestParam String city,@RequestParam String connectionType,@RequestParam int consumerId) throws ConsumerNotFoundException{
 		Consumer c  = consumerRepository.findById(consumerId).orElse(null);
 		if(c == null)
 			throw new ConsumerNotFoundException("Consumer Not Found!!");
 		else {
-			if(connectionType.equalsIgnoreCase("Domestic") || connectionType.equalsIgnoreCase("Commercial"))
-				consumerRepository.updateByConsumerId(consumerName, area, city, connectionType, consumerId);
-			else
-				throw new ConnectionTypeNotFound("Connection Type Invalid!!");
+			consumerRepository.updateByConsumerId(consumerName, area, city, connectionType, consumerId);
 		}
-			
+		
+		return "Consumer Details Updated Successfully!!";
+	}
+	
+	@DeleteMapping("/consumer/deleteConsumerById")
+	public String deleteConsumer(@RequestParam int consumerId) throws ConsumerNotFoundException {
+		Consumer c  = consumerRepository.findById(consumerId).orElse(null);
+		if(c == null)
+			throw new ConsumerNotFoundException("Consumer Not Found!!");
+		else {
+			consumerRepository.deleteById(c.getConsumerId());
+		}
+		return "Consumer Details Deleted Successfully!!";
 	}
 	
 	
