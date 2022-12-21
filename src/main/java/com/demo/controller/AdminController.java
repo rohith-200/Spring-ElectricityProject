@@ -3,6 +3,7 @@ package com.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -19,6 +20,7 @@ import com.demo.repository.AdminRepository;
 import com.demo.repository.BillRepository;
 import com.demo.repository.ConsumerRepository;
 
+@CrossOrigin(origins="http://localhost:4200")
 @RestController
 public class AdminController {
 	
@@ -32,7 +34,7 @@ public class AdminController {
 	ConsumerRepository consumerRepository;
 	
 	@PostMapping("/admin/addUnits")
-	public void addUnitsConsumed(@RequestParam("userName") String userName, @RequestParam("password") String password, @RequestParam("consumerId") int consumerId, @RequestParam("year") int year, @RequestParam("month") String month, @RequestParam("unitsConsumed") int unitsConsumed) throws ConsumerNotFoundException, AdminNotFoundException{
+	public Bill addUnitsConsumed(@RequestParam("userName") String userName, @RequestParam("password") String password, @RequestParam("consumerId") int consumerId, @RequestParam("year") int year, @RequestParam("month") String month, @RequestParam("unitsConsumed") int unitsConsumed) throws ConsumerNotFoundException, AdminNotFoundException{
 		Admin admin = adminRepository.validateAdmin(userName, password);
 		if(admin==null) 
 			throw new AdminNotFoundException("Invalid admin credentials");
@@ -43,12 +45,15 @@ public class AdminController {
 		bill.setConsumerId(c);
 		bill.setMonth(month);
 		bill.setYear(year);
+		bill.setUnitsConsumed(unitsConsumed);
 		if(c.getConnectionType().equals("domestic")){
 			bill.setTotalAmount(bill.getUnitsConsumed()*2);
 		}else
 			bill.setTotalAmount(bill.getUnitsConsumed()*4);
 	
-		billRepository.save(bill);
+		bill = billRepository.save(bill);
+		System.out.println(bill);
+		return bill;
 	}
 	
 	@GetMapping("/admin/getBillsByYear")
